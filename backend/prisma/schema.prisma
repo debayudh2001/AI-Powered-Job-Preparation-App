@@ -1,0 +1,94 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum SeverityLevel {
+  low
+  medium
+  high
+}
+
+model User {
+  id               String            @id @default(uuid()) @db.Uuid
+  email            String            @unique
+  username         String            @unique
+  password         String
+  createdAt        DateTime          @default(now())  
+  interviewReports InterviewReport[]
+  
+  @@map("users")
+}
+
+model InterviewReport {
+  id                  String               @id @default(uuid()) @db.Uuid
+  title               String
+  jobDescription      String               @db.Text
+  resume              String?              @db.Text
+  selfDescription     String?              @db.Text
+  matchScore          Int?                
+  userId              String               @db.Uuid
+  user                User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt           DateTime             @default(now())
+  
+  technicalQuestions  TechnicalQuestion[]
+  behavioralQuestions BehavioralQuestion[]
+  skillGaps           SkillGap[]
+  preparationPlans    PreparationPlan[]
+
+  @@map("interview_reports")
+}
+
+model TechnicalQuestion {
+  id                String          @id @default(uuid()) @db.Uuid
+  question          String          @db.Text
+  intention         String          @db.Text
+  answer            String          @db.Text
+  interviewReportId String          @db.Uuid
+  interviewReport   InterviewReport @relation(fields: [interviewReportId], references: [id], onDelete: Cascade)
+
+  @@map("technical_questions")
+}
+
+model BehavioralQuestion {
+  id                String          @id @default(uuid()) @db.Uuid
+  question          String          @db.Text
+  intention         String          @db.Text
+  answer            String          @db.Text
+  interviewReportId String          @db.Uuid
+  interviewReport   InterviewReport @relation(fields: [interviewReportId], references: [id], onDelete: Cascade)
+
+  @@map("behavioral_questions")
+}
+
+model SkillGap {
+  id                String          @id @default(uuid()) @db.Uuid
+  skill             String
+  severity          SeverityLevel
+  interviewReportId String          @db.Uuid
+  interviewReport   InterviewReport @relation(fields: [interviewReportId], references: [id], onDelete: Cascade)
+
+  @@map("skill_gaps")
+}
+
+model PreparationPlan {
+  id                String          @id @default(uuid()) @db.Uuid
+  day               Int
+  focus             String
+  tasks             String[]        
+  interviewReportId String          @db.Uuid
+  interviewReport   InterviewReport @relation(fields: [interviewReportId], references: [id], onDelete: Cascade)
+
+  @@map("preparation_plans")
+}
+
+
+

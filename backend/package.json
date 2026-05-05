@@ -1,0 +1,37 @@
+{
+  "name": "ai-powered-job-preparation-app",
+  "version": "1.0.0",
+  "main": "src/server.js",
+  "scripts": {
+    "build": "npm install && npx prisma generate",
+    "start": "npx prisma migrate deploy && node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "keywords": [],
+  "author": "Debayudh Chakraborty",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "@google/genai": "^1.48.0",
+    "@prisma/adapter-pg": "^7.5.0",
+    "@prisma/client": "^7.5.0",
+    "@upstash/redis": "^1.37.0",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.1.1",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "pdf-parse": "^2.4.5",
+    "pg": "^8.20.0",
+    "puppeteer": "^24.40.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "prisma": "^7.5.0"
+  }
+}
